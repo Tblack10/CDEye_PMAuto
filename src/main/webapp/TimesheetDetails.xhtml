@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <h:outputStylesheet library="css" name="styles.css"/>
+    <title>Project Management System</title>
+</h:head>
+<h:body>
+    <!-- Side bar panel will control the navigation of the application-->
+    <div class="side-bar"></div>
+
+    <!-- The current route -->
+    <div class="header-bar">
+        <div class="back-button">
+            <h:form styleClass="">
+                <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                                 value="Home" action="#{activeEmployeeBean.navHome()}"/>
+            </h:form>
+        </div>
+        <h3>EDIT TIMESHEET</h3>
+    </div>
+
+    <div class="container">
+        <h:form>
+            <h:messages globalOnly="false" style="color:red"/>
+            <h:panelGrid columns="2" cellpadding="10">
+                <p:outputLabel for="@next" value="Week Ending: "/>
+                <p:inputText placeholder="MMM. DD, YYYY" id="sheetDate" value="#{timesheetRowList.endDate}"
+                             required="true" styleClass="week-input" disabled="#{activeTimesheet.approved}">
+                    <f:convertDateTime type="localDate"/>
+                </p:inputText>
+
+                <p:outputLabel for="@next" value="Flex hours: "/>
+                <p:spinner id="flex" value="#{timesheetRowList.flex}" stepFactor="1"
+                           min="0" max="40" disabled="#{activeTimesheet.approved}"/>
+
+                <p:outputLabel for="@next" value="Vacation hours: "/>
+                <p:spinner id="vacation" value="#{timesheetRowList.vacation}" stepFactor="1"
+                           min="0" max="40" disabled="#{activeTimesheet.approved}"/>
+            </h:panelGrid>
+            <h:dataTable value="#{timesheetRowList.rowList}" var="row" styleClass="data-table">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Edit"/>
+                    </f:facet>
+                    <h:selectBooleanCheckbox value="#{row.editable}" onclick="submit()" disabled="#{activeTimesheet.approved}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">PROJECT</f:facet>
+                    <h:selectOneMenu value="#{row.projectNumber}" validator="#{timesheetRowList.validate}"
+                                     styleClass="edit-input-dropdown" rendered="#{row.editable}">
+                        <f:selectItems value="#{row.availProjects}" var="p" itemLabel="#{p.availProjectName}"
+                                       itemValue="#{p.availProjectNumber}"/>
+                        <f:attribute name="workPackageNumber" value="#{workPackageNumber}"/>
+                    </h:selectOneMenu>
+                    <h:outputText styleClass="edit-output" value="#{row.projectNumber}" rendered="#{not row.editable}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">WP</f:facet>
+                    <h:inputText id="wpNum" binding="#{workPackageNumber}" styleClass="edit-input"
+                                 value="#{row.workPackageNumber}" required="true"
+                                 rendered="#{row.editable}">
+                        <f:validateLength minimum="5" maximum="5"/>
+                    </h:inputText>
+                    <h:message for="wpNum" style="color:red"/>
+                    <h:outputText styleClass="edit-output" value="#{row.workPackageNumber}"
+                                  rendered="#{not row.editable}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Mon</f:facet>
+                    <h:inputText styleClass="edit-input-hour" value="#{row.mon}" rendered="#{row.editable}"
+                                 converter="weeklyHours">
+                        <f:validateDoubleRange minimum="0.0" maximum="24.0"/>
+                    </h:inputText>
+                    <h:outputText styleClass="edit-output" value="#{row.mon}" rendered="#{not row.editable}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Tue</f:facet>
+                    <h:inputText styleClass="edit-input-hour" value="#{row.tue}" rendered="#{row.editable}"
+                                 converter="weeklyHours">
+                        <f:validateDoubleRange minimum="0.0" maximum="24.0"/>
+                    </h:inputText>
+                    <h:outputText styleClass="edit-output" value="#{row.tue}" rendered="#{not row.editable}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Wed</f:facet>
+                    <h:inputText styleClass="edit-input-hour" value="#{row.wed}" rendered="#{row.editable}"
+                                 converter="weeklyHours">
+                        <f:validateDoubleRange minimum="0.0" maximum="24.0"/>
+                    </h:inputText>
+                    <h:outputText styleClass="edit-output" value="#{row.wed}" rendered="#{not row.editable}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Thu</f:facet>
+                    <h:inputText styleClass="edit-input-hour" value="#{row.thu}" rendered="#{row.editable}"
+                                 converter="weeklyHours">
+                        <f:validateDoubleRange minimum="0.0" maximum="24.0"/>
+                    </h:inputText>
+                    <h:outputText styleClass="edit-output" value="#{row.thu}" rendered="#{not row.editable}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Fri</f:facet>
+                    <h:inputText styleClass="edit-input-hour" value="#{row.fri}" rendered="#{row.editable}"
+                                 converter="weeklyHours">
+                        <f:validateDoubleRange minimum="0.0" maximum="24.0"/>
+                    </h:inputText>
+                    <h:outputText styleClass="edit-output" value="#{row.fri}" rendered="#{not row.editable}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Sat</f:facet>
+                    <h:inputText styleClass="edit-input-hour" value="#{row.sat}" rendered="#{row.editable}"
+                                 converter="weeklyHours">
+                        <f:validateDoubleRange minimum="0.0" maximum="24.0"/>
+                    </h:inputText>
+                    <h:outputText styleClass="edit-output" value="#{row.sat}" rendered="#{not row.editable}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Sun</f:facet>
+                    <h:inputText styleClass="edit-input-hour" value="#{row.sun}" rendered="#{row.editable}"
+                                 converter="weeklyHours">
+                        <f:validateDoubleRange minimum="0.0" maximum="24.0"/>
+                    </h:inputText>
+                    <h:outputText styleClass="edit-output" value="#{row.sun}" rendered="#{not row.editable}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Comments</f:facet>
+                    <h:inputText styleClass="edit-input" value="#{row.comments}" rendered="#{row.editable}"/>
+                    <h:outputText styleClass="edit-output" value="#{row.comments}" rendered="#{not row.editable}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Delete"/>
+                    </f:facet>
+                    <h:selectBooleanCheckbox value="#{row.deletable}" onclick="submit()" disabled="#{activeTimesheet.approved}"/>
+                </h:column>
+            </h:dataTable>
+
+            <h:commandButton styleClass="command-button" value="Save" action="#{timesheetRowList.save()}" rendered="#{not activeTimesheet.approved}" />
+            <h:commandButton styleClass="command-button" value="Add row" action="#{timesheetRowList.addRow()}" rendered="#{not activeTimesheet.approved}" />
+            <h:commandButton styleClass="command-button" value="Back" action="#{timesheetRowList.back()}"/>
+            <h:commandButton styleClass="command-button" value="Approve" action="#{timesheetRowList.approve()}" rendered="#{not activeTimesheet.approved}" />
+        </h:form>
+    </div>
+</h:body>
+</html>

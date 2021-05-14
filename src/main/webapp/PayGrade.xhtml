@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <h:outputStylesheet library="css" name="styles.css"/>
+    <title>Project Management System</title>
+</h:head>
+<h:body>
+    <!-- Side bar panel will control the navigation of the application-->
+    <div class="side-bar"></div>
+
+    <!-- The current route -->
+    <div class="header-bar">
+        <div class="back-button">
+            <h:form styleClass="">
+                <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                                 value="Home" action="#{activeEmployeeBean.navHome()}"/>
+            </h:form>
+        </div>
+        <h3>EDIT PayGrade</h3>
+        <div class="logout-button">
+            <h:form styleClass="">
+                <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                                 value="Logout" action="#{activeEmployeeBean.logout}"/>
+                <h:commandButton rendered="#{empty activeEmployeeBean.userName}"
+                                 value="Login" action="login"/>
+            </h:form>
+        </div>
+    </div>
+
+    <ui:fragment rendered="#{not empty activeEmployeeBean.userName}">
+        <div class="subcontainer">
+            <h:form>
+                <h3>Create New PayGrade</h3>
+                <div id="create-paygrade">
+                    <div class="input-column">
+                        <p>PayGrade Name</p>
+                        <h:inputText value="#{paygrade.name}"/>
+                    </div>
+
+                    <div class="input-column">
+                        <p>PayGrade Salary</p>
+                        <h:inputText value="#{paygrade.salary}"/>
+                    </div>
+                </div>
+                <div class="secondary-button">
+                    <h:commandButton value="Create" action="#{paygrade.add}"/>
+                </div>
+            </h:form>
+        </div>
+
+        <div class="bottom-container">
+            <h:form>
+                <h:dataTable value="#{paygradeList.list}" var="p"
+                             styleClass="data-table">
+                    <h:column>
+                        <f:facet name="header">PayGrade Id</f:facet>
+                        #{p.id}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Salary</f:facet>
+                        <h:inputText styleClass="edit-input" value="#{p.salary}"
+                                     rendered="#{p.editable}"/>
+                        <h:outputText styleClass="edit-output" value="#{p.salary}"
+                                      rendered="#{not p.editable}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">PayGrade Name</f:facet>
+                        <h:selectOneMenu value="#{p.name}" rendered="#{p.editable}">
+                            <f:selectItems value="#{p.paygradeItems}"/>
+                        </h:selectOneMenu>
+                        <h:outputText styleClass="edit-output" value="#{p.name}"
+                                      rendered="#{not p.editable}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Update PayGrade</f:facet>
+                        <h:commandButton styleClass="command-button" value="Update"
+                                         action="#{paygradeList.editSelectedPaygrade(p)}"
+                                         rendered="#{not p.editable}"/>
+                        <h:commandButton styleClass="command-button" value="Save"
+                                         action="#{paygradeList.saveSelectedPaygrade(p)}"
+                                         rendered="#{p.editable}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Delete PayGrade</f:facet>
+                        <h:commandButton styleClass="command-button" value="Delete"
+                                         action="#{paygradeList.deleteSelectedPaygrade(p)}"/>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+        </div>
+    </ui:fragment>
+
+</h:body>
+</html>

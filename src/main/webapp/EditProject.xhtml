@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <h:outputStylesheet library="css" name="styles.css"/>
+    <title>Edit Project</title>
+</h:head>
+<h:body>
+    <!-- Side bar panel will control the navigation of the application-->
+    <div class="side-bar"></div>
+
+    <!-- The current route -->
+    <div class="header-bar">
+        <div class="back-button">
+            <h:form styleClass="">
+                <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                                 value="Home" action="#{activeEmployeeBean.navHome()}"/>
+            </h:form>
+        </div>
+        <h3>EDIT PROJECT</h3>
+        <div class="logout-button">
+            <h:form styleClass="">
+                <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                                 value="Logout" action="#{activeEmployeeBean.logout}"/>
+                <h:commandButton rendered="#{empty activeEmployeeBean.userName}"
+                                 value="Login" action="login"/>
+            </h:form>
+        </div>
+    </div>
+
+    <!-- Form Container: reusable horizontal row input style-->
+    <!-- Need to replace the input value with Employee class members.-->
+    <ui:fragment rendered="#{not empty activeEmployeeBean.userName}">
+        <div class="form-container">
+            <h:form>
+                <h:messages style="color:red"/>
+                <div class="input-row">
+                    Project Name：
+                    <span class="text">
+                                <h:inputText styleClass="edit-input"
+                                             value="#{editProjectWrapper.editProject.projectName}"
+                                             rendered="true"/>
+                        </span>
+                </div>
+                <div class="input-row">
+                    Project Manager：
+                    <span class="text">
+                                <h:selectOneMenu value="#{editProjectWrapper.selectedManager}">
+                                    <f:selectItems value="#{editProjectWrapper.managers}"
+                                                   var="manager" itemLabel="#{manager.userName}"
+                                                   itemValue="#{manager.userName}"/>
+							    </h:selectOneMenu>
+						    </span>
+                </div>
+                <div class="input-row">
+                    End Date：
+                    <span class="text">
+                                <h:inputText styleClass="edit-input"
+                                             value="#{editProjectWrapper.editProject.endDate}"
+                                             rendered="true">
+								    <f:convertDateTime pattern="yyyy-MM-dd"/>
+							    </h:inputText>
+						</span>
+                </div>
+                <div class="input-row">
+                    Start Date：
+                    <span class="text">
+                                <h:inputText
+                                        styleClass="edit-input"
+                                        value="#{editProjectWrapper.editProject.startDate}"
+                                        rendered="true">
+								    <f:convertDateTime pattern="yyyy-MM-dd"/>
+							    </h:inputText>
+						</span>
+                </div>
+                <div class="input-row">
+                    Estimate Budget (S)：
+                    <span class="text">
+                                <h:inputText
+                                        styleClass="edit-input"
+                                        value="#{editProjectWrapper.editProject.estimateBudget}"
+                                        rendered="true"/>
+						    </span>
+                </div>
+                <div class="input-row">
+                    Mark-up Rate：
+                    <span class="text">
+                                <h:inputText
+                                        styleClass="edit-input"
+                                        value="#{editProjectWrapper.editProject.markUpRate}"
+                                        rendered="true"/>
+						    </span>
+                </div>
+                <div class="button-container">
+                    <h:commandButton value="Update" action="#{editProjectWrapper.updateProject}"/>
+                    <h:commandButton value="Back" action="#{editProjectWrapper.back()}"/>
+                </div>
+            </h:form>
+        </div>
+    </ui:fragment>
+</h:body>
+</html>

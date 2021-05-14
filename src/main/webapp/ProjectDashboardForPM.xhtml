@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+    <h:outputStylesheet library="css" name="dashboard.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Project Management System</title>
+</h:head>
+<body>
+
+<div class="c_left"></div>
+<div class="header">
+    <div class="back-button">
+        <h:form styleClass="">
+            <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                             value="Home" action="#{activeEmployeeBean.navHome()}"/>
+        </h:form>
+    </div>
+    <h3>Projects Managed by #{activeEmployeeBean.userName}</h3>
+    <div class="logout-button">
+        <h:form styleClass="">
+            <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                             value="Logout" action="#{activeEmployeeBean.logout}"/>
+            <h:commandButton rendered="#{empty activeEmployeeBean.userName}"
+                             value="Login" action="login"/>
+        </h:form>
+    </div>
+</div>
+
+<ui:fragment rendered="#{not empty activeEmployeeBean.userName}">
+    <div class="container">
+        <div class="c_content">
+            <div class="cont_box">
+                <c:forEach var="p" items="#{projectList.listForPM}"
+                           varStatus="status">
+                    <div class="project">
+                        <div class="pro_box">
+                            <h:form styleClass="">
+                                <div>
+                                    <span class="label">Project Name: </span><span class="text"><h:outputText
+                                        value="#{p.projectName}"/></span>
+                                    <h:commandButton styleClass="btn" value="View"
+                                                     action="#{projectDashboard.viewProjectWPs(p)}"/>
+                                </div>
+                                <div>
+                                    <span class="label">Project Number: </span><span class="text">
+											<h:outputText value="#{p.projectNumber}"/>
+										</span>
+                                    <h:commandButton styleClass="btn" value="Edit"
+                                                     action="#{projectDashboard.editProject(p)}"/>
+                                </div>
+                                <div>
+                                    <h:commandButton styleClass="btn" value="Delete"
+                                                     action="#{projectDashboard.deleteProject(p)}"/>
+                                </div>
+                                <div>
+                                    <h:commandButton styleClass="btn" value="Report"
+                                                     action="#{projectDashboard.reportProject(p)}"/>
+                                </div>
+                            </h:form>
+                        </div>
+                    </div>
+                </c:forEach>
+
+                <div class="create">
+                    <h:form styleClass="">
+                        <h:commandButton styleClass="create-btn" value="Create"
+                                         action="CreateProject"/>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </div>
+</ui:fragment>
+</body>
+</html>

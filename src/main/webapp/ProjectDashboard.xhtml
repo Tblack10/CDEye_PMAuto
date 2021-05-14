@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <h:outputStylesheet library="css" name="dashboard.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Project Management System</title>
+</h:head>
+<h:body>
+
+    <div class="c_left"></div>
+    <div class="header">
+        <h3>Project Dashboard</h3>
+        <h:button styleClass="back-button" rendered="#{not empty activeEmployeeBean.userName}" value="Home"
+                  outcome="#{projectDashboard.home()}"/>
+        <div class="logout-button">
+            <h:form styleClass="">
+                <h:commandButton rendered="#{not empty activeEmployeeBean.userName}" value="Logout"
+                                 action="#{activeEmployeeBean.logout}"/>
+                <h:commandButton rendered="#{empty activeEmployeeBean.userName}" value="Login" action="login"/>
+            </h:form>
+        </div>
+    </div>
+
+    <div class="card">
+        <h:form>
+            <p:dashboard id="board" model="#{projectDashboard.model}">
+                <c:forEach items="#{projectDashboard.list}" var="p">
+                    <p:panel id="#{p.panelId}" header="##{p.projectNumber}">
+                        <h:outputText value="#{p.projectName}"/>
+                        <f:facet name="footer">
+                            <p:commandButton icon="pi pi-search" styleClass="rounded-button ui-button-info"
+                                             action="#{projectDashboard.viewProjectWPs(p)}"/>
+                            <p:commandButton icon="pi pi-pencil" styleClass="rounded-button ui-button-info"
+                                             action="#{projectDashboard.editProject(p)}"/>
+                            <p:commandButton icon="pi pi-chart-line" styleClass="rounded-button ui-button-info"
+                                             action="#{projectDashboard.reportProject(p)}"/>
+                            <p:commandButton icon="pi pi-trash" styleClass="rounded-button ui-button-danger"
+                                             action="#{projectDashboard.deleteProject(p)}"/>
+                        </f:facet>
+                    </p:panel>
+                </c:forEach>
+            </p:dashboard>
+            <div style="clear:both"></div>
+        </h:form>
+    </div>
+</h:body>
+</html>

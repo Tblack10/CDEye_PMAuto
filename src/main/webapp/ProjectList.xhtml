@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <h:outputStylesheet library="css" name="styles.css"/>
+    <title>Project Management System</title>
+</h:head>
+<h:body>
+    <!-- Side bar panel will control the navigation of the application-->
+    <!--	<div class="side-bar"></div>-->
+
+    <!-- The current route -->
+    <div class="header-bar">
+        <div class="back-button">
+            <h:form styleClass="">
+                <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                                 value="Home" action="#{activeEmployeeBean.navHome()}"/>
+            </h:form>
+        </div>
+        <h3>Project List</h3>
+        <div class="logout-button">
+            <h:form styleClass="">
+                <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                                 value="Logout" action="#{activeEmployeeBean.logout}"/>
+                <h:commandButton rendered="#{empty activeEmployeeBean.userName}"
+                                 value="Login" action="login"/>
+            </h:form>
+        </div>
+    </div>
+
+    <ui:fragment rendered="#{not empty activeEmployeeBean.userName}">
+        <div class="project-container">
+            <h:form>
+                <h:dataTable value="#{projectList.list}" var="p"
+                             styleClass="data-table">
+                    <h:column>
+                        <f:facet name="header">Project Name</f:facet>
+                        <h:inputText styleClass="edit-input" value="#{p.projectName}"
+                                     rendered="#{p.editable}"/>
+                        <h:outputText styleClass="edit-output" value="#{p.projectName}"
+                                      rendered="#{not p.editable}"/>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Project Number</f:facet>
+                        <h:inputText styleClass="edit-input" value="#{p.projectNumber}"
+                                     rendered="#{p.editable}"/>
+                        <h:outputText styleClass="edit-output" value="#{p.projectNumber}"
+                                      rendered="#{not p.editable}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Edit"/>
+                        </f:facet>
+                        <h:selectBooleanCheckbox value="#{p.editable}" onclick="submit()"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Delete"/>
+                        </f:facet>
+                        <h:selectBooleanCheckbox value="#{p.deletable}" onclick="submit()"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">View Associated Workpackages</f:facet>
+                        <h:commandButton styleClass="command-button" value="View"
+                                         action="#{projectList.viewProjectWPs(p)}"/>
+                    </h:column>
+                </h:dataTable>
+                <h:commandButton styleClass="command-button" value="Save"
+                                 action="#{projectList.save()}"/>
+            </h:form>
+        </div>
+    </ui:fragment>
+</h:body>
+</html>

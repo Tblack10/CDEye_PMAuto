@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <h:outputStylesheet library="css" name="styles.css"/>
+    <title>Project Management System</title>
+</h:head>
+<h:body>
+    <!-- Side bar panel will control the navigation of the application-->
+    <div class="side-bar"></div>
+
+    <!-- The current route -->
+    <div class="header-bar">
+        <div class="back-button">
+            <h:form styleClass="">
+                <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                                 value="Home" action="#{activeEmployeeBean.navHome()}"/>
+            </h:form>
+        </div>
+        <h3>EDIT WORKPACKAGE (LEAF)</h3>
+        <div class="logout-button">
+            <h:form styleClass="">
+                <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                                 value="Logout" action="#{activeEmployeeBean.logout}"/>
+                <h:commandButton rendered="#{empty activeEmployeeBean.userName}"
+                                 value="Login" action="login"/>
+            </h:form>
+        </div>
+    </div>
+
+    <ui:fragment rendered="#{not empty activeEmployeeBean.userName}">
+        <h:form>
+            <div class="subcontainer">
+                <!-- Work Package Detail Input Field -->
+                <div>
+                    <div class="subtable-container">
+                        <div class="input-column">
+                            <p class="sub-title">Unallocated Budget from Parent</p>
+                            <h:outputText id="unallocatedbudget"
+                                          value="#{editableWpLeaf.calcUnallocatedBudget()}"
+                                          required="true"/>
+                            <h:message for="unallocatedbudget" style="color: red"/>
+                        </div>
+                        <div class="input-column">
+                            <p class="sub-title">Parent WorkPackage Number:</p>
+                            <h:outputText value="#{editableWpLeaf.parentWp.workPackageNumber}"
+                                          disabled="true"/>
+                        </div>
+                        <div class="input-column">
+                            <p class="sub-title">WorkPackage Number:</p>
+                            <h:outputText id="wpnumber"
+                                          value="#{editableWpLeaf.workPackageNumber}" required="true"/>
+                            <h:message for="wpnumber" style="color: red"/>
+                        </div>
+
+                        <div class="input-column">
+                            <p class="sub-title">Responsible Engineer (Username):</p>
+                            <h:inputText id="respEngUsrName"
+                                         value="#{editableWpLeaf.respEngUsername}"/>
+                            <h:message for="respEngUsrName" style="color: red"/>
+                        </div>
+
+                    </div>
+                    <div class="subtable-container">
+                        <div class="input-column">
+                            <p class="sub-title">Begin Date:</p>
+                            <h:inputText id="beginDate" value="#{editableWpLeaf.startDate}"
+                                         required="true">
+                                <f:convertDateTime pattern="yyyy-MM-dd" type="date"/>
+                            </h:inputText>
+                            <h:message for="beginDate" style="color: red"/>
+                        </div>
+                        <div class="input-column">
+                            <p class="sub-title">End Date:</p>
+                            <h:inputText id="endDate" value="#{editableWpLeaf.endDate}"
+                                         required="true">
+                                <f:convertDateTime pattern="yyyy-MM-dd" type="date"/>
+                            </h:inputText>
+                            <h:message for="endDate" style="color: red"/>
+                        </div>
+                        <div class="input-column">
+                            <p class="sub-title">Work Package Budget</p>
+                            <h:inputText value="#{editableWpLeaf.projectBudget}"/>
+                        </div>
+                        <div class="input-column">
+                            <p class="sub-title">Completed PB:</p>
+                            <h:inputText value="#{editableWpLeaf.completedBudget}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-container">
+                <div class="subtable-container">
+                    <!-- Allocated Budget Breakdown Inner Table-->
+                    <div class="subtable">
+                        <h2>Allocated Budget Breakdown</h2>
+                        <h:dataTable value="#{editableWpLeaf.wpAllocs}" var="w"
+                                     styleClass="data-table">
+                            <h:column>
+                                <f:facet name="header">Pay Grade</f:facet>
+                                #{w.paygrade.name}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Person Days</f:facet>
+                                <h:inputText styleClass="edit-input"
+                                             value="#{w.personDaysEstimate}"/>
+                            </h:column>
+                        </h:dataTable>
+                        <div class="subtable-summary">
+                            <div class="input-column">
+                                <p class="sub-title">Budget Estimate</p>
+                                <h:inputText value="#{editableWpLeaf.calcAllocatedBudget()}"
+                                             disabled="true"/>
+                            </div>
+                            <div class="input-column">
+                                <p class="sub-title">Person Day</p>
+                                <h:inputText value="#{editableWpLeaf.calcAllocatedPersonDays()}"
+                                             disabled="true"/>
+                            </div>
+                            <h:commandButton value="Refresh"
+                                             action="#{editableWpLeaf.refreshAllocatedBudgetCalculation}"
+                                             styleClass="command-button"/>
+                        </div>
+                    </div>
+                    <!-- Responsible Engineer Estimate Inner Table -->
+                    <div class="subtable">
+                        <h2>Responsible Engineer Estimate</h2>
+                        <h:dataTable value="#{receList.list}" var="r" styleClass="data-table">
+                            styleClass="data-table">
+                            <h:column>
+                                <f:facet name="header">Pay Grade</f:facet>
+                                #{r.paygrade.name}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Person Days</f:facet>
+                                <h:inputText styleClass="edit-input"
+                                             value="#{r.personDayEstimate}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Assignee</f:facet>
+
+
+                                <h:inputText styleClass="edit-input" value="#{r.empUserName}"/>
+
+
+                            </h:column>
+                        </h:dataTable>
+                        <div class="subtable-summary">
+                            <div class="input-column">
+                                <p class="sub-title">Budget Estimate</p>
+                                <h:inputText value="#{editableWpLeaf.calcRespEngBudget()}"
+                                             disabled="true"/>
+                            </div>
+                            <div class="input-column">
+                                <p class="sub-title">Person Day</p>
+                                <h:inputText value="#{editableWpLeaf.calcRespEngPersonDays()}"
+                                             disabled="true"/>
+                            </div>
+                            <h:commandButton value="Refresh"
+                                             action="#{editableWpLeaf.refreshResponsibleEngineerCalculation}"
+                                             styleClass="command-button"/>
+                        </div>
+                    </div>
+                </div>
+                <!-- Submit button container -->
+                <div class="button-row">
+                    <div class="button-container">
+                        <h:commandButton value="SUBMIT"
+                                         action="#{editableWpLeaf.saveEditedWorkPackageLeaf}"/>
+                    </div>
+                    <div class="button-container">
+                        <h:commandButton value="CANCEL"
+                                         action="#{editableWpLeaf.cancelEditedWorkPackageLeaf}"/>
+                    </div>
+                    <div class="button-container">
+                        <h:commandButton value="ASSIGN" action="#{editableWpLeaf.receList.assignEmployees()}"/>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:fragment>
+</h:body>
+</html>

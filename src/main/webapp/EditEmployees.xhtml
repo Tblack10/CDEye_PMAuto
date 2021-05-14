@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <h:outputStylesheet library="css" name="employee.css"/>
+    <title>Project Management System</title>
+</h:head>
+<h:body>
+    <!-- Side bar panel will control the navigation of the application-->
+    <div class="side-bar"></div>
+
+    <!-- The current route -->
+    <div class="header-bar">
+        <div class="back-button">
+            <h:form styleClass="">
+                <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                                 value="Home" action="#{activeEmployeeBean.navHome()}"/>
+            </h:form>
+        </div>
+        <h3>EDIT EMPLOYEE</h3>
+        <h:button styleClass="back-button" rendered="#{not empty activeEmployeeBean.userName}" value="Back"
+                  outcome="HRHome"/>
+        <div class="logout-button">
+            <h:form styleClass="">
+                <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                                 value="Logout" action="#{activeEmployeeBean.logout}"/>
+                <h:commandButton rendered="#{empty activeEmployeeBean.userName}"
+                                 value="Login" action="login"/>
+            </h:form>
+        </div>
+    </div>
+
+    <ui:fragment rendered="#{not empty activeEmployeeBean.userName}">
+        <div class="container">
+            <div id="search-bar-form">
+                <h:form styleClass="">
+                    <h:commandButton styleClass="search-button" value="Search"
+                                     action="#{employeeList.findEmployee()}"/>
+                    <h:inputText styleClass="edit-input" placeholder="Employee Username"
+                                 value="#{employeeList.search}">
+                    </h:inputText>
+                </h:form>
+            </div>
+            <h:form>
+                <h:dataTable value="#{employeeList.list}" var="e"
+                             styleClass="data-table">
+                    <h:column>
+                        <f:facet name="header">Employee Id</f:facet>
+                        #{e.empNum}
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">First Name</f:facet>
+                        <h:inputText styleClass="edit-input" value="#{e.firstName}"
+                                     rendered="#{e.editable}"/>
+                        <h:outputText styleClass="edit-output" value="#{e.firstName}"
+                                      rendered="#{not e.editable}"/>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Last Name</f:facet>
+                        <h:inputText styleClass="edit-input" value="#{e.lastName}"
+                                     rendered="#{e.editable}"/>
+                        <h:outputText styleClass="edit-output" value="#{e.lastName}"
+                                      rendered="#{not e.editable}"/>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Pay Grade Name</f:facet>
+                        <h:selectOneMenu value="#{e.payGrade.name}"
+                                         rendered="#{e.editable}">
+                            <f:selectItems value="#{e.paygradeItems}"/>
+                        </h:selectOneMenu>
+                        <h:outputText styleClass="edit-output" value="#{e.payGrade.name}"
+                                      rendered="#{not e.editable}"/>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Flextime Time</f:facet>
+                        <h:inputText styleClass="edit-input" value="#{e.flextime}"
+                                     rendered="#{e.editable}"/>
+                        <h:outputText styleClass="edit-output" value="#{e.flextime}"
+                                      rendered="#{not e.editable}"/>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Vacation Time</f:facet>
+                        <h:inputText styleClass="edit-input" value="#{e.vacationTime}"
+                                     rendered="#{e.editable}"/>
+                        <h:outputText styleClass="edit-output" value="#{e.vacationTime}"
+                                      rendered="#{not e.editable}"/>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Manager</f:facet>
+                        <h:inputText styleClass="edit-input" value="#{e.manager}"
+                                     rendered="#{e.editable}">
+                            <f:converter binding="#{employeeConverter}"/>
+                        </h:inputText>
+                        <h:outputText styleClass="edit-output" value="#{e.manager}"
+                                      rendered="#{not e.editable}">
+                            <f:converter binding="#{employeeConverter}"/>
+                        </h:outputText>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Active</f:facet>
+                        <h:selectOneMenu value="#{e.active}" rendered="#{e.editable}">
+                            <f:selectItems value="#{e.activeItems}"/>
+                        </h:selectOneMenu>
+                        <h:outputText styleClass="edit-output"
+                                      value="#{e.active ? msgs.yes : msgs.no}"
+                                      rendered="#{not e.editable}"/>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">HR</f:facet>
+                        <h:selectOneMenu value="#{e.hr}" rendered="#{e.editable}">
+                            <f:selectItems value="#{e.HRItems}"/>
+                        </h:selectOneMenu>
+                        <h:outputText styleClass="edit-output"
+                                      value="#{e.hr ? msgs.yes : msgs.no}" rendered="#{not e.editable}"/>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Edit</f:facet>
+                        <h:commandButton styleClass="command-button" value="Save"
+                                         action="#{employeeList.saveSelectedEmployee(e)}"
+                                         rendered="#{e.editable}"/>
+                        <h:commandButton styleClass="command-button" value="Edit"
+                                         action="#{employeeList.editSelectedEmployee(e)}"
+                                         rendered="#{not e.editable}"/>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+        </div>
+    </ui:fragment>
+</h:body>
+</html>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <h:outputStylesheet library="css" name="employee.css"/>
+    <title>Project Management System</title>
+</h:head>
+
+<!--http://localhost:8080/CDEye_PMAuto/CreateEmployee.xhtml-->
+<h:body>
+    <!-- Side bar panel will control the navigation of the application-->
+    <div class="side-bar"></div>
+
+    <!-- The current route -->
+    <div class="header-bar">
+        <div class="back-button">
+            <h:form styleClass="">
+                <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                                 value="Home" action="#{activeEmployeeBean.navHome()}"/>
+            </h:form>
+        </div>
+        <h3>CREATE A NEW EMPLOYEE</h3>
+        <h:button styleClass="back-button" rendered="#{not empty activeEmployeeBean.userName}" value="Back"
+                  outcome="HRHome"/>
+        <div class="logout-button">
+            <h:form styleClass="">
+                <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                                 value="Logout" action="#{activeEmployeeBean.logout}"/>
+                <h:commandButton rendered="#{empty activeEmployeeBean.userName}"
+                                 value="Login" action="login"/>
+            </h:form>
+        </div>
+    </div>
+
+    <!-- Form Container: reusable horizontal row input style-->
+    <!-- Need to replace the input value with Employee class members.-->
+    <ui:fragment rendered="#{not empty activeEmployeeBean.userName}">
+        <div class="form-container">
+            <h:form>
+                <!-- Employee Number -->
+                <div class="input-row">
+                    <p>Employee Number</p>
+                    <h:inputText id="empId" value="#{createEmployee.empNum}"
+                                 required="true" validator="#{employeeNumberValidator.validate}"/>
+                    <h:message for="empId" style="color:red"/>
+                </div>
+
+                <!-- Manager -->
+                <div class="input-row">
+                    <p>Manager</p>
+                    <h:inputText id="man" value="#{createEmployee.manager}">
+                        <f:converter binding="#{employeeConverter}"/>
+                    </h:inputText>
+                    <h:message for="man" style="color:red"/>
+                </div>
+
+                <!-- User Name -->
+                <div class="input-row">
+                    <p>User Name</p>
+                    <h:inputText id="uName" value="#{createEmployee.userName}"
+                                 required="true" validator="#{usernameValidator.validate}">
+                    </h:inputText>
+                    <h:message for="uName" style="color:red"/>
+                </div>
+
+                <!-- Password secret input-->
+                <div class="input-row">
+                    <p>Password</p>
+                    <h:inputSecret id="pw" value="#{createEmployee.password}"/>
+                    <h:message for="pw" style="color:red"/>
+                </div>
+
+                <!-- First Name -->
+                <div class="input-row">
+                    <p>First Name</p>
+                    <h:inputText id="fn" value="#{createEmployee.firstName}"/>
+                    <h:message for="fn" style="color:red"/>
+                </div>
+
+                <!-- Last Name -->
+                <div class="input-row">
+                    <p>Last Name</p>
+                    <h:inputText id="ln" value="#{createEmployee.lastName}"/>
+                    <h:message for="ln" style="color:red"/>
+                </div>
+
+                <div class="horizontal-grid">
+                    <!-- Is employee Active -->
+                    <div class="input-selector">
+                        <h:selectBooleanCheckbox value="#{createEmployee.active}"/>
+                        <p>Active</p>
+                    </div>
+
+                    <!-- Is the employee HR: NEED TO REPLACE WITH isHr afterwards-->
+                    <div class="input-selector">
+                        <h:selectBooleanCheckbox value="#{createEmployee.hr}"/>
+                        <p>Is HR</p>
+                    </div>
+
+                    <!-- 9 Paygrade selection items -->
+                    <!-- Currently use userName for placeholder, need to repalce later -->
+                    <div class="input-selector">
+                        <h:selectOneMenu id="grade" value="#{createEmployee.paygradeName}"
+                                         required="true">
+                            <f:selectItems value="#{createEmployee.paygradeItems}"/>
+                        </h:selectOneMenu>
+                        <h:message for="grade" style="color:red"/>
+                        <p>PayGrade</p>
+                    </div>
+                </div>
+
+                <!-- Create Employee: Add DB-->
+                <div class="button-container">
+                    <h:commandButton value="CREATE" action="EditEmployees">
+                        <f:actionListener binding="#{createEmployee.add()}"/>
+                    </h:commandButton>
+                </div>
+            </h:form>
+        </div>
+    </ui:fragment>
+</h:body>
+</html>

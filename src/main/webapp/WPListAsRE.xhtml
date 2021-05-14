@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <h:outputStylesheet library="css" name="styles.css"/>
+    <title>Project Management System</title>
+</h:head>
+
+<!--http://localhost:8080/CDEye_PMAuto/CreateEmployee.xhtml-->
+<h:body>
+    <!-- Side bar panel will control the navigation of the application-->
+    <div class="side-bar"></div>
+
+    <!-- The current route -->
+    <div class="header-bar">
+        <div class="back-button">
+            <h:form styleClass="">
+                <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                                 value="Home" action="#{activeEmployeeBean.navHome()}"/>
+            </h:form>
+        </div>
+        <h3>WP List</h3>
+        <div class="logout-button">
+            <h:form styleClass="">
+                <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                                 value="Logout" action="#{activeEmployeeBean.logout}"/>
+                <h:commandButton rendered="#{empty activeEmployeeBean.userName}"
+                                 value="Login" action="login"/>
+            </h:form>
+        </div>
+    </div>
+
+    <!-- Form Container: reusable horizontal row input style-->
+    <!-- Need to replace the input value with Employee class members.-->
+    <ui:fragment rendered="#{not empty activeEmployeeBean.userName}">
+        <div class="form-container">
+            <h:form>
+                <div class="button-container">
+                    <p>"Work Packages you are the responsible engineer for as #{activeEmployeeBean.userName}"</p>
+                </div>
+
+                <p>
+                    Work Package:
+                    <h:inputText value="#{workPackageList.searchPackageNumber}"/>
+                    <h:commandButton value="Search"
+                                     action="#{workPackageList.refreshList()}"/>
+                </p>
+
+                <h:dataTable value="#{workPackageList.listAsRE}" var="wp"
+                             styleClass="data-table">
+                    <h:column>
+                        <f:facet name="header">WP Number</f:facet>
+                        <h:inputText styleClass="edit-input"
+                                     value="#{wp.workPackageNumber}" rendered="#{wp.editable}"/>
+                        <h:outputText styleClass="edit-output"
+                                      value="#{wp.workPackageNumber}" rendered="#{not wp.editable}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Project Name</f:facet>
+                        <h:inputText styleClass="edit-input"
+                                     value="#{wp.project.projectName}" rendered="#{wp.editable}"/>
+                        <h:outputText styleClass="edit-output"
+                                      value="#{wp.project.projectName}" rendered="#{not wp.editable}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Work Package Budget</f:facet>
+                        <h:inputText styleClass="edit-input" value="#{wp.projectBudget}"
+                                     rendered="#{wp.editable}"/>
+                        <h:outputText styleClass="edit-output" value="#{wp.projectBudget}"
+                                      rendered="#{not wp.editable}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Unallocated Budget</f:facet>
+                        <h:outputText styleClass="edit-output"
+                                      value="#{wp.calcUnallocatedBudget()}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Allocated Budget</f:facet>
+                        <h:outputText styleClass="edit-output" value="#{wp.calcAllocatedBudget()}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Parent WP Number</f:facet>
+                        <h:inputText styleClass="edit-input" value="#{wp.parentWp.workPackageNumber}"
+                                     rendered="#{wp.editable}"/>
+                        <h:outputText styleClass="edit-output" value="#{wp.parentWp.workPackageNumber}"
+                                      rendered="#{not wp.editable}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Edit</f:facet>
+                        <h:commandButton styleClass="command-button" value="Edit"
+                                         action="#{activeWpBean.setActiveWorkPackage(wp)}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Delete</f:facet>
+                        <h:commandButton styleClass="command-button" value="Delete"
+                                         action="#{workPackageList.deleteWorkPackageIfLeaf(wp)}"/>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+        </div>
+    </ui:fragment>
+</h:body>
+</html>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+	<h:outputStylesheet library="css" name="styles.css" />
+	<title>Project Management System</title>
+</h:head>
+
+<div class="side-bar"></div>
+
+<div class="header-bar">
+	<div class="back-button">
+			<h:form styleClass="">
+				<h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+					value="Home" action="HRHome.xhtml?faces-redirect=true" />
+			</h:form>
+		</div>
+	<h3>Create Work Package</h3>
+</div>
+
+<div class="form-container">
+	<h:form>
+		<h4>Create Work Package</h4>
+
+		<div class="create-wp-input-row">
+			<p>W.P Number *</p>
+			<h:inputText id="wpNumber" value="#{newWorkPackage.workPackageNumber}" required="true" />
+		</div>
+		<h:message for="wpNumber" style="color:red" />
+
+
+		<div class="create-wp-input-row">
+			<p>Parent W.P *</p>
+			<h:inputText id="counter" value="#{newWorkPackage.parentWpNumber}" placeholder="Enter Text">  
+				<f:ajax event="keyup" render="wpNumber" listener="#{newWorkPackage.ajaxEvent()}" immediate="false"/>  
+			</h:inputText> 
+		</div>
+		<h:message for="parentWP" style="color:red" />
+
+
+		<div class="create-wp-input-row">
+			<p>
+				Begin Date <span style="color: red">*</span>
+			</p>
+			<h:inputText id="beginDate" value="#{newWorkPackage.startDate}"
+				required="true">
+				<f:convertDateTime type="date" pattern="yyyy-MM-dd" />
+			</h:inputText>
+		</div>
+		<h:message for="beginDate" style="color:red" />
+
+
+		<div class="create-wp-input-row">
+			<p>
+				End Date <span style="color: red">*</span>
+			</p>
+			<h:inputText id="endDate" value="#{newWorkPackage.endDate}"
+				required="true">
+				<f:convertDateTime type="date" pattern="yyyy-MM-dd" />
+			</h:inputText>
+		</div>
+		<h:message for="endDate" style="color:red" />
+
+
+		<div class="create-wp-input-row">
+			<p>Project Budget(field)</p>
+			<h:inputText id="projectBudget"
+				value="#{newWorkPackage.projectBudget}"
+				converterMessage="Please enter digits only." />
+		</div>
+		<h:message for="projectBudget" style="color:red" />
+
+
+		<div class="create-wp-checkbox">
+			<h:selectBooleanCheckbox value="#{newWorkPackage.leaf}" id="isLeaf" />
+			<span>&#160;Is Leaf</span>
+		</div>
+
+
+		<div style="text-align: center">
+			<p>* One of the input of two is required</p>
+		</div>
+
+		<div class="button-container">
+			<h:commandButton value="CREATE" action="#{newWorkPackage.add}" />
+		</div>
+	</h:form>
+</div>
+
+
+</html>
+

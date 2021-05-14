@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <title>RECEList</title>
+</h:head>
+<h:body>
+    <h:form>
+        <h:dataTable value="#{receList.list}" var="e"
+                     styleClass="products" columnClasses="odd,even">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Edit" style="font-weight: bold"/>
+                </f:facet>
+                <h:selectBooleanCheckbox value="#{e.editable}" onclick="submit()"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Package ID"
+                                  style="font-weight: bold"/>
+                </f:facet>
+                <h:outputText value="#{e.id}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="WPNum"
+                                  style="font-weight: bold"/>
+                </f:facet>
+                <h:inputText value="#{e.id}" rendered="#{e.editable}"
+                             size="10"/>
+                <h:outputText value="#{e.id}" rendered="#{not e.editable}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="PersonDayEstimate"
+                                  style="font-weight: bold"/>
+                </f:facet>
+                <h:inputText value="#{e.employee.firstName}" rendered="#{e.editable}"
+                             size="10"/>
+                <h:outputText value="#{e.employee.firstName}" rendered="#{not e.editable}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value=""
+                                  style="font-weight: bold"/>
+                </f:facet>
+                <h:inputText value="#{e.paygrade.name}" rendered="#{e.editable}"
+                             size="10"/>
+                <h:outputText value="#{e.paygrade.name}" rendered="#{not e.editable}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="testing wp id"
+                                  style="font-weight: bold"/>
+                </f:facet>
+                <h:outputText value="#{e.workPackage.id}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="testing wp number"
+                                  style="font-weight: bold"/>
+                </f:facet>
+                <h:outputText value="#{e.workPackage.workPackageNumber}"/>
+            </h:column>
+        </h:dataTable>
+    </h:form>
+</h:body>
+</html>

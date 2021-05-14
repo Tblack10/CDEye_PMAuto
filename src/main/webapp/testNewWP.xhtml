@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<h:outputStylesheet library="css" name="styles.css"/>
+	<title>Project Management System</title>
+</h:head>
+<h:body>
+<!--	Side bar panel will control the navigation of the application-->
+<!--	For now just a placeholder.-->
+	<div class="side-bar">
+
+	</div>
+
+<!--	Header bar display the current page the user located-->
+	<div class="header-bar">
+		<div class="back-button">
+			<h:form styleClass="">
+				<h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+					value="Home" action="HRHome.xhtml?faces-redirect=true" />
+			</h:form>
+		</div>
+		<h3>CREATE A NEW WORK PACKAGE</h3>
+	</div>
+
+<!--	Form Container: reusable horizontal row input style-->
+<!--	If you want to test database please replace the input value-->
+<!--	with respected Class memebrs.-->
+	<div class="form-container">
+		<h:form>
+
+			<div class="input-row">
+				<p>WP number</p>
+				<h:inputText value="#{newWorkPackage.workPackageNumber}" />
+			</div>
+			
+			<div class="input-row">
+				<p>Start date</p>
+				<h:inputText value="#{newWorkPackage.startDate}">
+					<f:convertDateTime type="localDate" pattern="yyyy-MM-dd"/>
+				</h:inputText>
+			</div>
+			
+			<div class="input-row">
+				<p>Completed number of person days</p>
+				<h:inputText value="#{newWorkPackage.completedPersonDays}" />
+			</div>
+			
+
+			<div class="button-container">
+				<h:commandButton value="CREATE" action="#{newWorkPackage.add()}" />
+			</div>
+		</h:form>
+	</div>
+</h:body>
+</html>

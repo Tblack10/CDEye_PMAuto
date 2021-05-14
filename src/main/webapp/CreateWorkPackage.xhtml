@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <h:outputStylesheet library="css" name="styles.css"/>
+    <title>Project Management System</title>
+</h:head>
+
+<div class="side-bar"></div>
+
+<div class="header-bar">
+    <div class="back-button">
+        <h:form styleClass="">
+            <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                             value="Home" action="#{activeEmployeeBean.navHome()}"/>
+        </h:form>
+    </div>
+    <h3>Create Work Package</h3>
+    <h:button styleClass="back-button" rendered="#{not empty activeEmployeeBean.userName}" value="Back"
+              outcome="#{projectDashboard.back()}"/>
+    <div class="logout-button">
+        <h:form styleClass="">
+            <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                             value="Logout" action="#{activeEmployeeBean.logout}"/>
+            <h:commandButton rendered="#{empty activeEmployeeBean.userName}"
+                             value="Login" action="login"/>
+        </h:form>
+    </div>
+</div>
+
+<ui:fragment rendered="#{not empty activeEmployeeBean.userName}">
+
+    <div class="form-container">
+        <h:form>
+            <h2 style="text-align: center">Project Number:
+                #{activeProjectBean.projectNumber}</h2>
+            <h3 style="margin: 32px 0 0 0">Create Work Package</h3>
+
+            <div class="create-wp-input-row">
+                <p>W.P Number *</p>
+                <h:inputText id="wpNumber"
+                             value="#{newWorkPackage.workPackageNumber}" required="true"/>
+            </div>
+            <h:message for="wpNumber" style="color:red"/>
+
+
+            <div class="create-wp-input-row">
+                <p>
+                    Begin Date <span style="color: red">*</span>
+                </p>
+                <h:inputText id="beginDate" value="#{newWorkPackage.startDate}"
+                             required="true">
+                    <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>
+                </h:inputText>
+            </div>
+            <h:message for="beginDate" style="color:red"/>
+
+
+            <div class="create-wp-input-row">
+                <p>
+                    End Date <span style="color: red">*</span>
+                </p>
+                <h:inputText id="endDate" value="#{newWorkPackage.endDate}"
+                             required="true">
+                    <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>
+                </h:inputText>
+            </div>
+            <h:message for="endDate" style="color:red"/>
+
+
+            <div class="create-wp-input-row">
+                <p>Project Budget(field)</p>
+                <h:inputText id="projectBudget"
+                             value="#{newWorkPackage.projectBudget}"
+                             converterMessage="Please enter digits only."/>
+            </div>
+            <h:message for="projectBudget" style="color:red"/>
+
+
+            <div class="create-wp-checkbox">
+                <h:selectBooleanCheckbox value="#{newWorkPackage.leaf}" id="isLeaf"/>
+                <span>&#160;Is Leaf</span>
+            </div>
+
+
+            <div style="text-align: center; margin-top: 16px">
+                <p>* One of the input of two is required</p>
+            </div>
+
+            <div class="button-container">
+                <h:commandButton value="CREATE" action="#{newWorkPackage.add}"/>
+            </div>
+        </h:form>
+    </div>
+</ui:fragment>
+
+
+</html>

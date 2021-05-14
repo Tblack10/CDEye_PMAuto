@@ -1,0 +1,73 @@
+@font-face {
+    font-family: 'Quicksand';
+    src: url('#{resource["fonts/Quicksand.ttf"]}');
+}
+
+/*Global style clean up*/
+* {
+    font-family: Quicksand, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #f8f8f8;
+}
+
+input:focus {
+    outline: none;
+}
+
+#login-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+}
+
+.login-input-row {
+    margin: 15px 0;
+    letter-spacing: 2px;
+    font-weight: bold;
+    color: #f8f8f8;
+    font-size: 14px;
+}
+
+#login-container h3 {
+    font-size: 30px;
+    text-align: center;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+}
+
+.login-input-row input {
+    width: 100%;
+    padding: 10px 20px 10px 50px;
+    margin-top: 10px;
+    border-radius: 25px;
+    border: 1px solid #d7d7d7;
+}
+
+.login-input-row input:focus {
+    outline: none;
+}
+
+.button-container {
+    text-align: center;
+}
+
+.button-container input {
+    border-radius: 25px;
+    padding: 10px 30px;
+    margin: 20px 0;
+    color: #03a9f4;
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid #03a9f4;
+    font-size: 16px;
+    width: 200px;
+}
+
+.button-container input:focus {
+    outline: none;
+}

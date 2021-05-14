@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <h:outputStylesheet library="css" name="styles.css"/>
+    <title>Project Management System</title>
+</h:head>
+<h:body>
+    <!-- Side bar panel will control the navigation of the application-->
+    <div class="side-bar"></div>
+
+    <!-- The current route -->
+    <div class="header-bar">
+        <div class="back-button">
+            <h:form styleClass="">
+                <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                                 value="Home" action="#{activeEmployeeBean.navHome()}"/>
+            </h:form>
+        </div>
+        <h3>CREATE A NEW TIMESHEET</h3>
+    </div>
+
+    <div class="container">
+        <h:form>
+            <h:messages globalOnly="false" style="color:red"/>
+            <h:panelGrid columns="2" cellpadding="10">
+                <p:outputLabel for="@next" value="Week Ending: "/>
+                <p:inputText placeholder="MMM. DD, YYYY" id="sheetDate" value="#{createTimesheet.endDate}"
+                             required="true" styleClass="week-input">
+                    <f:convertDateTime type="localDate"/>
+                </p:inputText>
+
+                <p:outputLabel for="@next" value="Flex hours: "/>
+                <p:spinner id="flex" value="#{createTimesheet.flex}" stepFactor="1" min="0" max="40"/>
+
+                <p:outputLabel for="@next" value="Vacation hours: "/>
+                <p:spinner id="vacation" value="#{createTimesheet.vacation}" stepFactor="1" min="0" max="40"/>
+            </h:panelGrid>
+
+            <h:dataTable value="#{createTimesheet.editableRows}" styleClass="data-table" var="timesheetRow">
+                <h:column>
+                    <f:facet name="header">PROJECT</f:facet>
+                    <h:selectOneMenu value="#{timesheetRow.projectNumber}" validator="#{createTimesheet.validate}"
+                                     styleClass="edit-input-dropdown">
+                        <f:selectItems value="#{timesheetRow.availProjects}" var="p" itemLabel="#{p.availProjectName}"
+                                       itemValue="#{p.availProjectNumber}"/>
+                        <f:attribute name="workPackageNumber" value="#{workPackageNumber}"/>
+                    </h:selectOneMenu>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Work Pacakge</f:facet>
+                    <p:inputText binding="#{workPackageNumber}" styleClass="wp-input" id="wpNum"
+                                 value="#{timesheetRow.workPackageNumber}"
+                                 required="true" placeholder="#####">
+                        <f:validateLength minimum="5" maximum="5"/>
+                    </p:inputText>
+                    <h:message for="wpNum" style="color:red"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Sat</f:facet>
+                    <h:inputText styleClass="edit-input-hour" value="#{timesheetRow.sat}" converter="weeklyHours">
+                        <f:validateDoubleRange minimum="0.0" maximum="24.0"/>
+                    </h:inputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Sun</f:facet>
+                    <h:inputText styleClass="edit-input-hour" value="#{timesheetRow.sun}" converter="weeklyHours">
+                        <f:validateDoubleRange minimum="0.0" maximum="24.0"/>
+                    </h:inputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Mon</f:facet>
+                    <h:inputText styleClass="edit-input-hour" value="#{timesheetRow.mon}" converter="weeklyHours">
+                        <f:validateDoubleRange minimum="0.0" maximum="24.0"/>
+                    </h:inputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Tue</f:facet>
+                    <h:inputText styleClass="edit-input-hour" value="#{timesheetRow.tue}" converter="weeklyHours">
+                        <f:validateDoubleRange minimum="0.0" maximum="24.0"/>
+                    </h:inputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Wed</f:facet>
+                    <h:inputText styleClass="edit-input-hour" value="#{timesheetRow.wed}" converter="weeklyHours">
+                        <f:validateDoubleRange minimum="0.0" maximum="24.0"/>
+                    </h:inputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Thu</f:facet>
+                    <h:inputText styleClass="edit-input-hour" value="#{timesheetRow.thu}" converter="weeklyHours">
+                        <f:validateDoubleRange minimum="0.0" maximum="24.0"/>
+                    </h:inputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Fri</f:facet>
+                    <h:inputText styleClass="edit-input-hour" value="#{timesheetRow.fri}" converter="weeklyHours">
+                        <f:validateDoubleRange minimum="0.0" maximum="24.0"/>
+                    </h:inputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Comments</f:facet>
+                    <h:inputText styleClass="edit-input" value="#{timesheetRow.comments}"/>
+                </h:column>
+            </h:dataTable>
+            <h:commandButton styleClass="command-button" value="ADD ROW" action="#{createTimesheet.addRow()}"/>
+            <h:commandButton styleClass="command-button" value="CREATE" action="#{createTimesheet.add()}"/>
+        </h:form>
+    </div>
+</h:body>
+</html>

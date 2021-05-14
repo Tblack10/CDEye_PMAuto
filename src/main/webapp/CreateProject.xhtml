@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <h:outputStylesheet library="css" name="styles.css"/>
+    <title>Project Management System</title>
+</h:head>
+<h:body>
+    <div class="side-bar"></div>
+    <div class="header-bar">
+        <div class="back-button">
+            <h:form styleClass="">
+                <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                                 value="Home" action="#{activeEmployeeBean.navHome()}" />
+            </h:form>
+        </div>
+        <h3>CREATE NEW PROJECT</h3>
+        <div class="logout-button">
+            <h:form styleClass="">
+                <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                                 value="Logout" action="#{activeEmployeeBean.logout}" />
+                <h:commandButton rendered="#{empty activeEmployeeBean.userName}"
+                                 value="Login" action="login" />
+            </h:form>
+        </div>
+
+    </div>
+    <!-- Form Container: reusable horizontal row input style-->
+    <!-- Need to replace the input value with Employee class members.-->
+    <ui:fragment rendered="#{not empty activeEmployeeBean.userName}">
+        <div class="form-container">
+            <h:form>
+                <div class="input-row">
+                    <p>Project Number:</p>
+                    <h:inputText id="projNum" value="#{createProject.projectNumber}"/>
+                </div>
+
+                <div class="input-row">
+                    <p>Project Name:</p>
+                    <h:inputText id="projName" value="#{createProject.projectName}"/>
+                </div>
+
+                <div class="button-container">
+                    <h:commandButton value="CREATE" action="#{createProject.add}"/>
+                </div>
+                <div class="error-container">
+                    <h:panelGroup rendered="#{createProject.showError}">
+                        <p class="error-msg">#{createProject.errorMsg}</p>
+                    </h:panelGroup>
+                </div>
+            </h:form>
+        </div>
+    </ui:fragment>
+</h:body>
+
+
+</html>

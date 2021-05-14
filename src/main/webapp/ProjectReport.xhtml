@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <h:outputStylesheet library="css" name="styles.css"/>
+    <title>Project Report</title>
+</h:head>
+<h:body>
+    <!-- Side bar panel will control the navigation of the application-->
+    <div class="side-bar"></div>
+
+    <!-- The current route -->
+    <div class="header-bar">
+        <div class="back-button">
+            <h:form styleClass="">
+                <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                                 value="Back" action="#{projectDashboard.back()}" />
+            </h:form>
+        </div>
+        <h3>PROJECT REPORT</h3>
+        <div class="logout-button">
+            <h:form styleClass="">
+                <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                                 value="Logout" action="#{activeEmployeeBean.logout}" />
+                <h:commandButton rendered="#{empty activeEmployeeBean.userName}"
+                                 value="Login" action="login" />
+            </h:form>
+        </div>
+
+    </div>
+
+    <!-- Form Container: reusable horizontal row input style-->
+    <!-- Need to replace the input value with Employee class members.-->
+    <ui:fragment rendered="#{not empty activeEmployeeBean.userName}">
+        <div class="container">
+            <h:form>
+                <h2>#{activeProjectBean.projectName}
+                    #(#{activeProjectBean.projectNumber})</h2>
+                <br/>
+                <h:dataTable value="#{workPackageList.list}" var="wp"
+                             styleClass="data-table">
+                    <h:column>
+                        <f:facet name="header">WP Number</f:facet>
+                        <h:outputText styleClass="edit-output" value="#{wp.workPackageNumber}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Work Package Budget</f:facet>
+                        <h:outputText styleClass="edit-output" value="#{wp.projectBudget}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Estimate At Completion</f:facet>
+                        <h:outputText styleClass="edit-output" value="#{wp.calcRespEngBudget()}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Completed Work</f:facet>
+                        <h:outputText styleClass="edit-output" value="#{wp.calcCompletedBudget()}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Variance</f:facet>
+                        <h:outputText styleClass="edit-output" value="#{wp.calcVariance()}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Completion</f:facet>
+                        <h:outputText styleClass="edit-output" value="#{wp.calcCompletion()}"/>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+        </div>
+    </ui:fragment>
+</h:body>
+</html>

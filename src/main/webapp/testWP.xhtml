@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+   <h:head><title>testWP</title></h:head>
+   <body>
+            <h:form>
+         		<h1 class="header">testWP</h1>
+         		
+         		<div class="main">
+         		
+         			<h:outputText value="test header 1" />
+         			<br/>
+         			<h:outputText value="#{editableWorkPackage.id}" />
+         			<br/>
+         			
+         			<br/>
+         			<h:outputText value="test header 2" />
+         			<br/>
+         			<h:outputText rendered="#{not editableWorkPackage.editable}"
+         				value="#{editableWorkPackage.workPackageNumber}" />
+         			<h:inputText rendered="#{editableWorkPackage.editable}"
+         				value="#{editableWorkPackage.workPackageNumber}" />
+         			<br/>
+         			
+         			<br/>
+         			<h:outputText value="test header 3" />
+         			<br/>
+         			<h:outputText rendered="#{not editableWorkPackage.editable}"
+         				value="#{editableWorkPackage.startDate}" />
+         			<h:inputText rendered="#{editableWorkPackage.editable}"
+         				value="#{editableWorkPackage.startDate}">
+         				<f:convertDateTime type="localDate" pattern="yyyy-MM-dd"/>
+         			</h:inputText>
+         			
+         			
+         			<div class="editTableButtons">
+						<h:commandButton rendered="#{not editableWorkPackage.editable}"
+							action="#{editableWorkPackage.startEdit()}" value="Edit" />
+					</div>
+         			
+					<div class="editTableButtons">
+						<h:commandButton rendered="#{editableWorkPackage.editable}"
+							action="#{editableWorkPackage.saveEdit()}" value="Save Edit" />
+					</div>
+					
+					<div class="editTableButtons">
+						<h:commandButton action="#{editableWorkPackage.delete()}" value="Delete" />
+					</div>
+					
+					<br/>
+					<div class="editTableButtons">
+						<h:commandButton action="testWPs" value="View All" />
+					</div>
+					
+				</div>
+      		</h:form>
+   </body>
+</html>

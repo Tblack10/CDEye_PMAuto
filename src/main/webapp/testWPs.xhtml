@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+   <h:head><title>testWPs</title></h:head>
+   <body>
+            <h:form>
+         		<h1 class="header">testWPs</h1>
+         		
+         		<p>
+
+         				<h:inputText value="#{workPackageList.searchId}" />
+         				<h:inputText value="#{workPackageList.searchParentPackageId}" />
+         				<h:inputText value="#{workPackageList.searchPackageNumber}" />
+         				<h:commandButton action="#{workPackageList.search()}" value="Search" />
+         				<h:commandButton action="#{workPackageList.clearSearch()}" value="Show All" />
+
+         		</p>
+         		
+         		<div class="main">
+         
+         			<h:dataTable value = "#{workPackageList.list}" var = "sheet"
+         				styleClass="table" rowClasses="odd,even" headerClass="tableHeading">
+	
+						<h:column>
+         					<f:facet name="header">
+      							<h:outputText value="test header 1" />
+      						</f:facet>
+   							<h:outputText value="#{sheet.id}" />
+       					</h:column>
+       					
+       					<h:column>
+         					<f:facet name="header">
+      							<h:outputText value="test header 2" />
+      						</f:facet>
+   							<h:outputText value="#{sheet.workPackageNumber}" />
+       					</h:column>
+       	
+       					<h:column>
+         					<f:facet name="header">
+      							<h:outputText value="test header 3" />
+      						</f:facet>
+   							<h:outputText value="#{sheet.startDate}" />
+       					</h:column>
+       					
+       					<h:column>
+         					<f:facet name="header">
+      							<h:outputText value="test rece conections" />
+      						</f:facet>
+   							<h:outputText value="#{sheet.RECEs.size()}" />
+       					</h:column>
+       					
+       					<h:column>
+         					<f:facet name="header">
+      							<h:outputText value="test alloc connections" />
+      						</f:facet>
+   							<h:outputText value="#{sheet.wpAllocs.size()}" />
+       					</h:column>
+       	
+       					<h:column>
+   							<h:commandButton action="testWP" value="View/Edit" actionListener = "#{editableWorkPackage.usePackage(sheet)}" />
+       					</h:column>
+   		
+				</h:dataTable>
+			
+				<div class="editTableButtons">
+					<h:commandButton action="testNewWP" value="Create New" />
+				</div>
+			</div>
+      		</h:form>
+   </body>
+</html>

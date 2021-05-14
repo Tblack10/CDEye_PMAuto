@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <h:outputStylesheet library="css" name="styles.css"/>
+    <title>Project Management System</title>
+</h:head>
+
+<h:body>
+    <div class="side-bar"></div>
+
+    <div class="header-bar">
+        <div class="back-button">
+            <h:form styleClass="">
+                <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                                 value="Home" action="#{activeEmployeeBean.navHome()}"/>
+            </h:form>
+        </div>
+        <h3>EDIT WORKPACKAGE (BRANCH)</h3>
+        <div class="logout-button">
+            <h:form styleClass="">
+                <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                                 value="Logout" action="#{activeEmployeeBean.logout}"/>
+                <h:commandButton rendered="#{empty activeEmployeeBean.userName}"
+                                 value="Login" action="login"/>
+            </h:form>
+        </div>
+    </div>
+
+    <ui:fragment rendered="#{not empty activeEmployeeBean.userName}">
+        <div class="form-container">
+            <h:form>
+                <div class="input-row">
+                    <p>WorkPackage Number</p>
+                    <h:outputText id="empId" value="#{activeWpBean.workPackageNumber}"/>
+                    <h:message for="empId" style="color:red"/>
+                </div>
+
+                <div class="input-row">
+                    <p>Parent WP Number</p>
+                    <h:outputText id="parentWp" value="#{activeWpBean.parentWp.workPackageNumber}"/>
+                    <h:message for="parentWp" style="color:red"/>
+                </div>
+
+                <div class="input-row">
+                    <p>Begin Date</p>
+                    <h:inputText id="beginDate" value="#{activeWpBean.startDate}">
+                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+                    </h:inputText>
+                    <h:message for="beginDate" style="color:red"/>
+                </div>
+
+                <div class="input-row">
+                    <p>End Date</p>
+                    <h:inputText id="endDate" value="#{activeWpBean.endDate}">
+                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+                    </h:inputText>
+                    <h:message for="endDate" style="color:red"/>
+                </div>
+
+                <div class="input-row">
+                    <p>Work Package Budget</p>
+                    <h:inputText id="WpBudget" value="#{activeWpBean.projectBudget}"/>
+                    <h:message for="WpBudget" style="color:red"/>
+                </div>
+
+                <div class="input-row">
+                    <p>Allocated WorkPackage Budget</p>
+                    <h:outputText id="ln" value="#{activeWpBean.calcAllocatedBudget()}"/>
+                    <h:message for="ln" style="color:red"/>
+                </div>
+
+                <div class="horizontal-grid">
+                    <div class="input-selector">
+                        <h:selectBooleanCheckbox value="#{activeWpBean.leaf}"/>
+                        <p>Is Leaf</p>
+                    </div>
+
+                </div>
+
+                <div class="button-container">
+                    <h:commandButton value="Edit"
+                                     action="${activeWpBean.mergeActive()}"/>
+                </div>
+            </h:form>
+        </div>
+    </ui:fragment>
+</h:body>
+</html>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+<h:head>
+    <h:outputStylesheet library="css" name="styles.css"/>
+    <title>Project Management System</title>
+</h:head>
+
+<!--http://localhost:8080/CDEye_PMAuto/CreateEmployee.xhtml-->
+<h:body>
+    <!-- Side bar panel will control the navigation of the application-->
+    <div class="side-bar">
+
+    </div>
+
+    <!-- The current route -->
+    <div class="header-bar">
+        <div class="back-button">
+            <h:form styleClass="">
+                <h:commandButton rendered="#{not empty activeEmployeeBean.userName}"
+                                 value="Home" action="#{activeEmployeeBean.navHome()}"/>
+            </h:form>
+        </div>
+        <h3>CREATE A NEW TIMESHEET</h3>
+    </div>
+
+    <!-- Form Container: reusable horizontal row input style-->
+    <!-- Need to replace the input value with Employee class members.-->
+    <div class="form-container">
+        <h:form>
+            <!-- Employee Number -->
+            <div class="input-row">
+                <p>Week Ending</p>
+                <h:inputText value="#{createTimesheet.endDate}" required="true">
+                    <f:convertDateTime type="localDate"/>
+                </h:inputText>
+            </div>
+
+            <div class="timesheet-table-container">
+                <h:dataTable value="#{createTimesheet.details}"
+                             var="timesheetRow">
+                    <h:column>
+                        <f:facet name="header">PROJECT</f:facet>
+                        <h:inputText value="#{timesheetRow.projectID}"/>
+                        <f:facet rendered="#{view.viewId eq '/views/timesheets/view.xhtml'}"
+                                 name="footer">#{msgs['timesheetRow.total']}</f:facet>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">#{msgs['timesheetRow.workPackage']}</f:facet>
+                        <h:outputText value="#{timesheetRow.workPackage}"
+                                      rendered="#{not timesheetController.editTimesheet.editable}"/>
+                        <p:inputText value="#{timesheetRow.workPackage}"
+                                     rendered="#{timesheetController.editTimesheet.editable}"/>
+                    </p:column>
+                    <p:column rendered="#{view.viewId eq '/views/timesheets/view.xhtml'}">
+                        <f:facet name="header">#{msgs['timesheetRow.total']}</f:facet>
+                        <h:outputText value="#{timesheetRow.sum}"/>
+                        <f:facet name="footer">#{timesheetController.editTimesheet.timesheet.totalHours}</f:facet>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">#{msgs['timesheetRow.saturday']}</f:facet>
+                        <h:outputText value="#{timesheetRow.hoursForWeek[0]}" converter="weeklyHours"
+                                      rendered="#{not timesheetController.editTimesheet.editable}"/>
+
+                        <p:inputText value="#{timesheetRow.hoursForWeek[0]}" converter="weeklyHours"
+                                     rendered="#{timesheetController.editTimesheet.editable}">
+                            <f:validateDoubleRange minimum="0.0" maximum="24.0"/>
+                        </p:inputText>
+                        <f:facet rendered="#{view.viewId eq '/views/timesheets/view.xhtml'}"
+                                 name="footer">#{timesheetController.editTimesheet.timesheet.dailyHours[0]}</f:facet>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">#{msgs['timesheetRow.sunday']}</f:facet>
+                        <h:outputText value="#{timesheetRow.hoursForWeek[1]}" converter="weeklyHours"
+                                      rendered="#{not timesheetController.editTimesheet.editable}"/>
+                        <p:inputText value="#{timesheetRow.hoursForWeek[1]}" converter="weeklyHours"
+                                     rendered="#{timesheetController.editTimesheet.editable}">
+                            <f:validateDoubleRange minimum="0.0" maximum="24.0"/>
+                        </p:inputText>
+                        <f:facet rendered="#{view.viewId eq '/views/timesheets/view.xhtml'}"
+                                 name="footer">#{timesheetController.editTimesheet.timesheet.dailyHours[1]}</f:facet>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">#{msgs['timesheetRow.monday']}</f:facet>
+                        <h:outputText value="#{timesheetRow.hoursForWeek[2]}" converter="weeklyHours"
+                                      rendered="#{not timesheetController.editTimesheet.editable}"/>
+                        <p:inputText value="#{timesheetRow.hoursForWeek[2]}" converter="weeklyHours"
+                                     rendered="#{timesheetController.editTimesheet.editable}">
+                            <f:validateDoubleRange minimum="0.0" maximum="24.0"/>
+                        </p:inputText>
+                        <f:facet rendered="#{view.viewId eq '/views/timesheets/view.xhtml'}"
+                                 name="footer">#{timesheetController.editTimesheet.timesheet.dailyHours[2]}</f:facet>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">#{msgs['timesheetRow.tuesday']}</f:facet>
+                        <h:outputText value="#{timesheetRow.hoursForWeek[3]}" converter="weeklyHours"
+                                      rendered="#{not timesheetController.editTimesheet.editable}"/>
+                        <p:inputText value="#{timesheetRow.hoursForWeek[3]}" converter="weeklyHours"
+                                     rendered="#{timesheetController.editTimesheet.editable}">
+                            <f:validateDoubleRange minimum="0.0" maximum="24.0"/>
+                        </p:inputText>
+                        <f:facet rendered="#{view.viewId eq '/views/timesheets/view.xhtml'}"
+                                 name="footer">#{timesheetController.editTimesheet.timesheet.dailyHours[3]}</f:facet>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">#{msgs['timesheetRow.wednesday']}</f:facet>
+                        <h:outputText value="#{timesheetRow.hoursForWeek[4]}" converter="weeklyHours"
+                                      rendered="#{not timesheetController.editTimesheet.editable}"/>
+                        <p:inputText value="#{timesheetRow.hoursForWeek[4]}" converter="weeklyHours"
+                                     rendered="#{timesheetController.editTimesheet.editable}">
+                            <f:validateDoubleRange minimum="0.0" maximum="24.0"/>
+                        </p:inputText>
+                        <f:facet rendered="#{view.viewId eq '/views/timesheets/view.xhtml'}"
+                                 name="footer">#{timesheetController.editTimesheet.timesheet.dailyHours[4]}</f:facet>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">#{msgs['timesheetRow.thursday']}</f:facet>
+                        <h:outputText value="#{timesheetRow.hoursForWeek[5]}" converter="weeklyHours"
+                                      rendered="#{not timesheetController.editTimesheet.editable}"/>
+                        <p:inputText value="#{timesheetRow.hoursForWeek[5]}" converter="weeklyHours"
+                                     rendered="#{timesheetController.editTimesheet.editable}">
+                            <f:validateDoubleRange minimum="0.0" maximum="24.0"/>
+                        </p:inputText>
+                        <f:facet rendered="#{view.viewId eq '/views/timesheets/view.xhtml'}"
+                                 name="footer">#{timesheetController.editTimesheet.timesheet.dailyHours[5]}</f:facet>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">#{msgs['timesheetRow.friday']}</f:facet>
+                        <h:outputText value="#{timesheetRow.hoursForWeek[6]}" converter="weeklyHours"
+                                      rendered="#{not timesheetController.editTimesheet.editable}"/>
+                        <p:inputText value="#{timesheetRow.hoursForWeek[6]}" converter="weeklyHours"
+                                     rendered="#{timesheetController.editTimesheet.editable}">
+                            <f:validateDoubleRange minimum="0.0" maximum="24.0"/>
+                        </p:inputText>
+                        <f:facet rendered="#{view.viewId eq '/views/timesheets/view.xhtml'}"
+                                 name="footer">#{timesheetController.editTimesheet.timesheet.dailyHours[6]}</f:facet>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">#{msgs['timesheetRow.comments']}</f:facet>
+                        <h:outputText value="#{timesheetRow.notes}"
+                                      rendered="#{not timesheetController.editTimesheet.editable}"/>
+                        <p:inputText value="#{timesheetRow.notes}"
+                                     rendered="#{timesheetController.editTimesheet.editable}"/>
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+            <!-- Create Timesheet: Add DB-->
+            <div class="button-container">
+                <h:commandButton value="CREATE" action="home">
+                    <f:actionListener binding="#{createTimesheet.add()}"/>
+                </h:commandButton>
+            </div>
+        </h:form>
+    </div>
+</h:body>
+</html>
